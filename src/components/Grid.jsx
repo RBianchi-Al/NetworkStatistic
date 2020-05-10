@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, createStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import { Form, Title } from './styles';
-import CustomizedTables from './Table/index';
-
-
+import TextField from '@material-ui/core/TextField';
+import CustomizedTables from '../components/Table'
+import { Title } from './styles';
 import {
   FormControlLabel,
   RadioGroup,
@@ -13,25 +12,59 @@ import {
   Grid,
 } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(12, 1fr)',
-    gridGap: theme.spacing(3),
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-    whiteSpace: 'nowrap',
-    marginBottom: theme.spacing(1),
-  },
-  root: {
-    flexGrow: 1,
-  },
-}));
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    root: {
+      flexGrow: 1,
+      display: 'flex'
+    },
+    paper: {
+      padding: theme.spacing('flex'),
+      textAlign: 'center',
+      color: theme.palette.text.secondary,
+      alignContent: theme.spacing('center'),
+      alignItems: theme.spacing('center'),
+      verticalAlign: theme.spacing('center'),
+      paddingLeft: theme.spacing('5'),
+      paddingRight: theme.spacing('5'),
+      paddingBottom: theme.spacing('5'),
+      paddingTop: theme.spacing('5'),
 
-function CenteredGrid() {
+
+
+
+    },
+    grid: {
+      paddingLeft: theme.spacing(15),
+      paddingTop: theme.spacing(0),
+      paddingRight: theme.spacing(10),
+      marginTop: theme.spacing(0),
+
+    },
+    select: {
+      display: 'flex',
+      margin: theme.spacing(3),
+    },
+    margin: {
+      marginBottom: theme.spacing(1),
+      flexWrap: 'wrap',
+      display: 'flex',
+      height: '15ch',
+
+    },
+    input: {
+      display: 'flex',
+      flexWrap: 'wrap',
+    },
+    textField: {
+      marginLeft: theme.spacing(1),
+      marginRight: theme.spacing(1),
+      width: '25ch',
+    },
+  })
+);
+
+export default function FullWidthGrid() {
   const classes = useStyles();
   const [tipoAnalise, setTipoAnalise] = useState('');
   const [nameVariavel, setNameVariavel] = useState('');
@@ -50,16 +83,17 @@ function CenteredGrid() {
   }
 
   return (
-    <>
-      <form onSubmit={(event) => handleSubmitForm(event)}>
-        <Grid container className={classes.root}>
-          <Grid item xs={4}>
-            <Paper className={classes.paper}>
+    <div className={classes.root}>
+      <Grid container spacing={3} className={classes.grid}>
+        {/* <Grid item xs={12}>
+          <Paper className={classes.paper}>xs=12</Paper>
+        </Grid> */}
+        <Grid item xs={12} sm={4} onSubmit={(event) => handleSubmitForm(event)}>
+          <Paper className={classes.paper}>
+            <Grid container >
               <div>
-              <Title>INSIRA OS DADOS:</Title>
-                <br />
-                <br />
-                <input
+                <Title>INSIRA OS DADOS:</Title>
+                {/* <input
                   align="center"
                   type="file"
                   className="form-control-file"
@@ -69,16 +103,16 @@ function CenteredGrid() {
                 <small id="fileHelp" className="form-text text-muted">
                   Somente arquivos no formato...
                 </small>
-                <hr></hr>
+                <hr></hr> */}
                 <label>TIPO DE ANÁLISE:</label>
                 <Grid>
                   <RadioGroup
                     name="tipoAnalise"
                     value={tipoAnalise}
                     onChange={(event) => setTipoAnalise(event.target.value)}
-                    row
                     aria-label="position"
                     defaultValue="top"
+                    className={classes.select}
                   >
                     <FormControlLabel
                       value="population"
@@ -93,10 +127,15 @@ function CenteredGrid() {
                     />
                   </RadioGroup>
                 </Grid>
-                <hr></hr>
-                <Form>
-                  <label>INSIRA O NOME DA VARIÁVEL:</label>
-                  <input
+                <label>INSIRA OS VALORES:</label>
+
+                <div className={classes.input}>
+                  <TextField
+                    label="Label"
+                    style={{ margin: 8 }}
+                    helperText="Full width!"
+                    fullWidth
+                    margin="flex"
                     type="text"
                     className="form-control"
                     name="nome"
@@ -104,48 +143,56 @@ function CenteredGrid() {
                     placeholder=""
                     value={nameVariavel}
                     onChange={(event) => setNameVariavel(event.target.value)}
-                  ></input>
-                </Form>
-                &nbsp;
-                <Form>
-                  <label>INSIRA OS VALORES:</label>
-                  <input
-                    type="number"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    variant="outlined"
+                  />
+                  <TextField
+                    label="Label"
+                    style={{ margin: 8 }}
+                    helperText="Full width!"
+                    fullWidth
+                    margin="flex"
                     className="form-control"
                     name="number"
                     id="variavel"
                     placeholder=""
                     value={valores}
                     onChange={(event) => setValores(event.target.value)}
-                  ></input>
-                </Form>
-                <hr></hr>
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    variant="outlined"
+                  />
+                </div>
+
                 <label>SELECIONE A ANÁLISE:</label>
                 <RadioGroup
                   name="tipoCalculo"
                   value={tipoCalculo}
                   onChange={(event) => setTipoCalculo(event.target.value)}
-
                   aria-label="position"
                   defaultValue="top"
+                  className={classes.select}
                 >
                   <FormControlLabel
-                    value="opcao1"
+                    value="quali"
                     control={<Radio />}
                     label="Qualitativa"
                   />
                   <FormControlLabel
-                    value="opcao2"
+                    value="quanti"
                     control={<Radio />}
-                    label="Qualitativa"
+                    label="Quantitativa"
                   />
                   <FormControlLabel
-                    value="opcao3"
+                    value="ordinal"
                     control={<Radio />}
                     label="Ordinal"
                   />
                   <FormControlLabel
-                    value="opcao4"
+                    value="discreta"
                     control={<Radio />}
                     label="Discreta"
                   />
@@ -166,23 +213,28 @@ function CenteredGrid() {
                   </Button>
                 </Grid>
               </div>
-            </Paper>
-          </Grid>
-          <Grid item xs={1}/>
-
-          <Grid item xs={7}>
-            <Paper className={classes.paper}>
-              <Title>TABELA</Title>
-              <CustomizedTables />
-              <br></br>
-              <Title>GRÁFICOS</Title>
-              <CustomizedTables />
-            </Paper>
-          </Grid>
+            </Grid>
+          </Paper>
         </Grid>
-      </form>
-    </>
+
+        <Grid item xs={12} sm={8}>
+          <Paper className={classes.paper}>
+            <CustomizedTables/>
+          </Paper>
+        </Grid>
+        <Grid item xs={6} sm={3}>
+          <Paper className={classes.paper}>xs=6 sm=3</Paper>
+        </Grid>
+        <Grid item xs={6} sm={3}>
+          <Paper className={classes.paper}>xs=6 sm=3</Paper>
+        </Grid>
+        <Grid item xs={6} sm={3}>
+          <Paper className={classes.paper}>xs=6 sm=3</Paper>
+        </Grid>
+        <Grid item xs={6} sm={3}>
+          <Paper className={classes.paper}>xs=6 sm=3</Paper>
+        </Grid>
+      </Grid>
+    </div>
   );
 }
-
-export default CenteredGrid;

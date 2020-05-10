@@ -14,6 +14,6 @@ html, body, #root{
 }
 
 body{
-background:#eceff1 ;
+
 
 `;

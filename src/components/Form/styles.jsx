@@ -21,8 +21,8 @@ export const Form = styled.form`
 `;
 
 export const Container = styled.div`
-  margin-top: 0%;
-  max-width: flex;
+margin-top:0%;
+  max-width: 100%;
   background: black;
   border-color: #004d40;
   padding: 1%;

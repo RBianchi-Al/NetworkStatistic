@@ -1,5 +1,9 @@
 import React from 'react';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import {
+  withStyles,
+  makeStyles,
+
+} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -8,10 +12,14 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
+
+
+
+
 const StyledTableCell = withStyles((theme) => ({
   head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
+    backgroundColor: theme.palette.primary.light,
+    color: theme.palette.common.black,
   },
   body: {
     fontSize: 14,
@@ -21,7 +29,7 @@ const StyledTableCell = withStyles((theme) => ({
 const StyledTableRow = withStyles((theme) => ({
   root: {
     '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.action.hover,
+      // backgroundColor: theme.palette.action.hover,
     },
   },
 }))(TableRow);
@@ -40,7 +48,7 @@ const rows = [
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 700,
+    minWidth: 400,
   },
 });
 
