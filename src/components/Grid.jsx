@@ -4,6 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import CustomizedTables from '../components/Table'
 import { Title } from './styles';
+import Grafic from './Grafic/index'
 import {
   FormControlLabel,
   RadioGroup,
@@ -220,8 +221,13 @@ export default function FullWidthGrid() {
         <Grid item xs={12} sm={8}>
           <Paper className={classes.paper}>
             <CustomizedTables/>
+            <Paper className={classes.paper} elevation={0} >
+                <Title>Grafico</Title>
+                <Grafic/>
+            </Paper>
           </Paper>
         </Grid>
+
         <Grid item xs={6} sm={3}>
           <Paper className={classes.paper}>xs=6 sm=3</Paper>
         </Grid>
