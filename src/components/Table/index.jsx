@@ -8,10 +8,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
-import Grafic from '../Grafic';
 
-// import Grid from '@material-ui/core/Paper';
-// import Grafic from '../Grafic'
+git
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -134,7 +132,7 @@ export default function CustomizedTables(props) {
           </TableBody>
         </Table>
       </TableContainer>
-      
+
     </>
   );
 }
