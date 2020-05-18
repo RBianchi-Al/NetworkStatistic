@@ -1,15 +1,17 @@
 import React from 'react';
-import Navbar from '../../components/navbar';
+import BreakpointDown from '../../components/Form/index'
 
 
+import Navbar from '../../components/navbar'
+// import { Container } from './styles';
 
-import CenteredGrid from '../../components/Grid';
+function Repository() {
+  return <div>
 
-export default function Descritiva() {
-  return (
-    <>
-      <Navbar />
-      <CenteredGrid />
-    </>
-  );
+    <Navbar />
+    <BreakpointDown/>
+  </div> ;
+
 }
+
+export default Repository;

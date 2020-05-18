@@ -1,9 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { makeStyles, createStyles} from '@material-ui/core/styles';
+import React, { useState } from 'react';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
-import CustomizedTables from '../Table'
+import CustomizedTables from '../Table';
 import { Title } from './styles';
+import Grafic from '../Grafic';
+import Grafic3 from '../Grafic3';
+import Grafic2 from '../Grafic2';
+import axios from 'axios';
+
 import {
   FormControlLabel,
   RadioGroup,
@@ -16,30 +21,22 @@ const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
       flexGrow: 1,
-      display: 'flex'
+      display: 'flex',
     },
     paper: {
-      padding: theme.spacing('flex'),
+      padding: theme.spacing('5'),
       textAlign: 'center',
       color: theme.palette.text.secondary,
       alignContent: theme.spacing('center'),
       alignItems: theme.spacing('center'),
       verticalAlign: theme.spacing('center'),
-      paddingLeft: theme.spacing('5'),
-      paddingRight: theme.spacing('5'),
-      paddingBottom: theme.spacing('5'),
-      paddingTop: theme.spacing('5'),
-
-
-
-
     },
     grid: {
       paddingLeft: theme.spacing(15),
       paddingTop: theme.spacing(0),
       paddingRight: theme.spacing(10),
       marginTop: theme.spacing(0),
-
+      minHeight: theme.spacing(100),
     },
     select: {
       display: 'flex',
@@ -50,7 +47,6 @@ const useStyles = makeStyles((theme) =>
       flexWrap: 'wrap',
       display: 'flex',
       height: '15ch',
-
     },
     input: {
       display: 'flex',
@@ -67,19 +63,39 @@ const useStyles = makeStyles((theme) =>
 export default function FullWidthGrid() {
   const classes = useStyles();
   const [tipoAnalise, setTipoAnalise] = useState('');
-  const [nameVariavel, setNameVariavel] = useState('');
+  const [nomeVariavel, setNomeVariavel] = useState('');
   const [tipoCalculo, setTipoCalculo] = useState('');
-  const [valores, setValores] = useState(0);
+  const [valores, setValores] = useState([]);
+  const [exibirValor, setExibirValor] = useState('Nome da Variável');
+  const [frequencias, setFrequencias] = useState([]);
+  const [exibirGrafico, setExibirGrafico] = useState(false);
+
+  const chamarApi = async () => {
+    try {
+      const {
+        data: { frequencias },
+      } = await axios.post('http://localhosto:3333/values', {
+        nomeVariavel,
+        tipoCalculo,
+        valores,
+        tipoAnalise,
+      });
+      setFrequencias(frequencias);
+    } catch (_error) {
+      console.log(_error);
+    } finally {
+    }
+  };
 
   const handleSubmitForm = (event) => {
     event.preventDefault();
-    console.log(valores);
   };
 
-  useEffect(() => {}, [tipoCalculo]);
-
   function onSubmit(event) {
-    console.log(event.target.value);
+    setExibirValor(nomeVariavel);
+    setExibirGrafico(true);
+
+    event.preventDefault();
   }
 
   return (
@@ -90,7 +106,7 @@ export default function FullWidthGrid() {
         </Grid> */}
         <Grid item xs={12} sm={4} onSubmit={(event) => handleSubmitForm(event)}>
           <Paper className={classes.paper}>
-            <Grid container >
+            <Grid container>
               <div>
                 <Title>INSIRA OS DADOS:</Title>
                 {/* <input
@@ -115,13 +131,13 @@ export default function FullWidthGrid() {
                     className={classes.select}
                   >
                     <FormControlLabel
-                      value="population"
+                      value="1"
                       control={<Radio />}
                       label="População"
                     />
 
                     <FormControlLabel
-                      value="sample"
+                      value="2"
                       control={<Radio />}
                       label="Amostra"
                     />
@@ -131,29 +147,26 @@ export default function FullWidthGrid() {
 
                 <div className={classes.input}>
                   <TextField
-                    label="Label"
+                    label="Nome da variável"
                     style={{ margin: 8 }}
-                    helperText="Full width!"
                     fullWidth
-                    margin="flex"
                     type="text"
                     className="form-control"
                     name="nome"
                     id="variavel"
                     placeholder=""
-                    value={nameVariavel}
-                    onChange={(event) => setNameVariavel(event.target.value)}
+                    value={nomeVariavel}
+                    onChange={(event) => setNomeVariavel(event.target.value)}
                     InputLabelProps={{
                       shrink: true,
                     }}
                     variant="outlined"
                   />
                   <TextField
-                    label="Label"
+                    label="Valores espaçados por vírgula"
                     style={{ margin: 8 }}
-                    helperText="Full width!"
                     fullWidth
-                    margin="flex"
+                    type="text"
                     className="form-control"
                     name="number"
                     id="variavel"
@@ -177,24 +190,24 @@ export default function FullWidthGrid() {
                   className={classes.select}
                 >
                   <FormControlLabel
-                    value="quali"
+                    value="1"
                     control={<Radio />}
-                    label="Qualitativa"
+                    label="Qualitativa Nominal"
                   />
                   <FormControlLabel
-                    value="quanti"
+                    value="2"
                     control={<Radio />}
-                    label="Quantitativa"
+                    label="Qualitativa Ordinal"
                   />
                   <FormControlLabel
-                    value="ordinal"
+                    value="3"
                     control={<Radio />}
-                    label="Ordinal"
+                    label="Quantitativa Discreta"
                   />
                   <FormControlLabel
-                    value="discreta"
+                    value="4"
                     control={<Radio />}
-                    label="Discreta"
+                    label="Quantitativa Contínua"
                   />
                 </RadioGroup>
                 <Grid container justify="center">
@@ -218,21 +231,31 @@ export default function FullWidthGrid() {
         </Grid>
 
         <Grid item xs={12} sm={8}>
-          <Paper className={classes.paper}>
-            <CustomizedTables/>
-          </Paper>
+          {exibirGrafico && (
+            <Paper className={classes.paper}>
+              <CustomizedTables
+                nomeVariavel={exibirValor}
+                frequencias={frequencias}
+              />
+              {tipoCalculo === '1' && <Grafic />}
+              {tipoCalculo === '2' && <Grafic />}
+              {tipoCalculo === '3' && <Grafic3 />}
+              {tipoCalculo === '4' && <Grafic2 />}
+            </Paper>
+          )}
+        </Grid>
+            
+        <Grid item xs={6} sm={3}>
+          <Paper className={classes.paper}>Media</Paper>
         </Grid>
         <Grid item xs={6} sm={3}>
-          <Paper className={classes.paper}>xs=6 sm=3</Paper>
+          <Paper className={classes.paper}>Moda</Paper>
         </Grid>
         <Grid item xs={6} sm={3}>
-          <Paper className={classes.paper}>xs=6 sm=3</Paper>
+          <Paper className={classes.paper}>Mediana</Paper>
         </Grid>
         <Grid item xs={6} sm={3}>
-          <Paper className={classes.paper}>xs=6 sm=3</Paper>
-        </Grid>
-        <Grid item xs={6} sm={3}>
-          <Paper className={classes.paper}>xs=6 sm=3</Paper>
+          <Paper className={classes.paper}>Outros Valores</Paper>
         </Grid>
       </Grid>
     </div>

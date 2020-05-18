@@ -179,7 +179,7 @@ export default function MiniDrawer() {
         </List>
 
         <List>
-          {['Correlação e Regressão'].map((text) => (
+          {['Correlação Regressão'].map((text) => (
             <ListItem button key={text} component={Link} to={'/repository'}>
               <ListItemIcon>
                 <MailIcon />

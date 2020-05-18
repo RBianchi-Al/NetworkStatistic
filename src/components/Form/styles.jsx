@@ -42,3 +42,17 @@ export const Result = styled.div`
   padding: 2%;
   display: flex;
 `;
+
+export const Paper = styled.div `
+
+      padding: flex;
+      text-align: 'center';
+      align-content: 'center';
+      align-items: 'center';
+      padding-left: 5;
+      padding-right: 5;
+      padding-bottom: 5;
+      padding-top: 5;
+
+`;
+
