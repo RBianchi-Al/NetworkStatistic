@@ -74,7 +74,7 @@ export default function FullWidthGrid() {
     try {
       const {
         data: { frequencias },
-      } = await axios.post('http://localhosto:3333/values', {
+      } = await axios.create(process.env.REACT_APP_API_URL, {
         nomeVariavel,
         tipoCalculo,
         valores,
@@ -244,7 +244,7 @@ export default function FullWidthGrid() {
             </Paper>
           )}
         </Grid>
-            
+
         <Grid item xs={6} sm={3}>
           <Paper className={classes.paper}>Media</Paper>
         </Grid>
